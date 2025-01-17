@@ -112,6 +112,10 @@ void standBy()
 
 void adjustClock()
 {
+  clockHour = hours;
+  clockMinute = minutes;
+  setClock(getTime(clockHour, clockMinute));
+
   setupButton = analogRead(setupButtonPin);
   hourButton = analogRead(hourButtonPin);
   minuteButton = analogRead(minuteButtonPin);
