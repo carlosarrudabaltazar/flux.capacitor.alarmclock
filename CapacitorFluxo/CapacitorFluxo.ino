@@ -112,10 +112,6 @@ void standBy()
 
 void adjustClock()
 {
-  clockHour = hours;
-  clockMinute = minutes;
-  setClock(getTime(clockHour, clockMinute));
-
   setupButton = analogRead(setupButtonPin);
   hourButton = analogRead(hourButtonPin);
   minuteButton = analogRead(minuteButtonPin);
@@ -216,8 +212,11 @@ void adjustAlarm()
     mp3.playTrackNumber(1, 25, true);
     miliseconds += 1000;
     Serial.println("Adjust clock");
-    setupButton = 0;
-    setClock(getTime(hours, minutes));
+    setupButton = 0;  
+    clockHour = hours;
+    clockMinute = minutes;
+    setClock(getTime(clockHour, clockMinute));
+
   }
 }
 
