@@ -115,10 +115,6 @@ void adjustClock()
   setupButton = analogRead(setupButtonPin);
   hourButton = analogRead(hourButtonPin);
   minuteButton = analogRead(minuteButtonPin);
-  /*Serial.print("SetupButton: " + String(setupButton));
-  Serial.print(" HourButton: " + String(hourButton));
-  Serial.print(" HourButton: " + String(minuteButton));
-  Serial.println("");*/
 
   if (hourButton >= analogHighLevel && 
       minuteButton < analogHighLevel && 
@@ -164,10 +160,6 @@ void adjustAlarm()
   setupButton = analogRead(setupButtonPin);
   hourButton = analogRead(hourButtonPin);
   minuteButton = analogRead(minuteButtonPin);
-  /*Serial.print("SetupButton: " + String(setupButton));
-  Serial.print(" HourButton: " + String(hourButton));
-  Serial.print(" HourButton: " + String(minuteButton));
-  Serial.println("");*/
 
   if (hourButton >= analogHighLevel && 
       minuteButton < analogHighLevel && 
@@ -223,7 +215,6 @@ void adjustAlarm()
 void runClock()
 {
   setupButton = analogRead(setupButtonPin);
-  //Serial.println("SetupButton: " + String(setupButton));
 
   if(setupButton >= analogHighLevel)
   {
@@ -290,7 +281,6 @@ String getTime(int hours, int minutes)
 
 void updateTime()
 {
-  //Serial.println("Miliseconds: " + String(miliseconds));
   delay(milisecondDelay);
 
   miliseconds += milisecondDelay + milisecondAdjust;
@@ -359,15 +349,6 @@ void runAlarm()
   mp3.playTrackNumber(3, 20, true);
 
   strip.clear();
-
-  /*for(int i = 0; i < (ledCount/3); i++)
-  {
-    strip.setPixelColor(i, 255, 255, 255);
-    strip.setPixelColor((8+i), 255, 255, 255);
-    strip.setPixelColor((16+i), 255, 255, 255);
-  }
-
-  strip.show();*/
 
   miliseconds += 22500;
   minutes += 1;
