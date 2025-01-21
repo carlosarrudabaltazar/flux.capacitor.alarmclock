@@ -298,14 +298,7 @@ void updateTime()
   if (hours == alarmHours && minutes == alarmMinutes && alarm)
     runAlarm();
 
-  if (miliseconds >= 60000)
-  {
-    miliseconds = 0;
-    minutes++;
-    setClock(getTime(hours, minutes));
-  }
-
-  if (minutes == 60)
+  if (minutes == 59)
   {
     minutes = 0;
     hours++;
@@ -313,6 +306,13 @@ void updateTime()
 
   if (hours == 24)
     hours = 0;
+
+  if (miliseconds >= 60000)
+  {
+    setClock(getTime(hours, minutes));
+    miliseconds = 0;
+    minutes++;
+  }
 }
 
 void printSave()
