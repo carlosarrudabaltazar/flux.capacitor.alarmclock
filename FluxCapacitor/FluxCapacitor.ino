@@ -17,19 +17,19 @@ int dio = 3;
 int x0 = 11;
 int x1 = 10;
 int ledPin = 9;
-int setupButtonPin = A0;
-int hourButtonPin = A1;
-int minuteButtonPin = A2;
+int setupButtonPin = A1;
+int hourButtonPin = A3;
+int minuteButtonPin = A5;
 
 //Global Variables
 boolean passedFirstStart = false;
 
-int analogHighLevel = 1020;
+int analogHighLevel = 1015;
 
 int hours = 0;
 int minutes = 0;
 long miliseconds = 0;
-int milisecondDelay = 374;
+int milisecondDelay = 368;
 int milisecondAdjust = 500 - milisecondDelay;
 
 int clockHour = 0;
@@ -40,6 +40,9 @@ int alarmHours = 0;
 int alarmMinutes = 0;
 
 int setupButton = 0;
+int setupLongpress[2];
+int setupIdx = 0;
+
 int hourButton = 0;
 int minuteButton = 0;
 
@@ -72,11 +75,6 @@ void loop()
   else
     delay(milisecondDelay);
 
-  /*setupButton = analogRead(setupButtonPin);
-  hourButton = analogRead(hourButtonPin);
-  minuteButton = analogRead(minuteButtonPin);
-  Serial.println("setup:"+String(setupButton)+" | hour:"+String(hourButton)+" | minute:"+String(minuteButton));*/
-
   switch(clockState)
   {
     case clockStates::standby:
@@ -96,7 +94,7 @@ void loop()
 
 void standBy()
 {
-  setupButton = analogRead(setupButtonPin);
+  setupButton = readSetupButton(setupButtonPin);
 
   if(setupButton >= analogHighLevel)
   {
@@ -117,7 +115,7 @@ void standBy()
 
 void adjustClock()
 {
-  setupButton = analogRead(setupButtonPin);
+  setupButton = readSetupButton(setupButtonPin);
   hourButton = analogRead(hourButtonPin);
   minuteButton = analogRead(minuteButtonPin);
 
@@ -162,7 +160,7 @@ void adjustClock()
 
 void adjustAlarm()
 {
-  setupButton = analogRead(setupButtonPin);
+  setupButton = readSetupButton(setupButtonPin);
   hourButton = analogRead(hourButtonPin);
   minuteButton = analogRead(minuteButtonPin);
 
@@ -219,7 +217,7 @@ void adjustAlarm()
 
 void runClock()
 {
-  setupButton = analogRead(setupButtonPin);
+  setupButton = readSetupButton(setupButtonPin);
 
   if(setupButton >= analogHighLevel)
   {
@@ -359,6 +357,36 @@ void runAlarm()
   minutes += 1;
 
   setClock(getTime(hours, minutes));
+}
+
+int readSetupButton(int setupPin)
+{
+  int read = analogRead(setupPin);
+  int sum = 0;
+
+  for (int i = 0; i < sizeof(setupLongpress); i++)
+  {
+    sum += setupLongpress[i];
+  }
+  
+  if (setupIdx < sizeof(setupLongpress))
+  {
+    setupLongpress[setupIdx] = read;
+    setupIdx ++;
+    return 0;
+  }
+  else if (sum >= (analogHighLevel * sizeof(setupLongpress)))
+  {
+    memset(setupLongpress, 0, sizeof(setupLongpress));
+    setupIdx = 0;
+    return 1023;
+  }
+  else 
+  {
+    memset(setupLongpress, 0, sizeof(setupLongpress));
+    setupIdx = 0;
+    return 0;
+  }
 }
 
 
