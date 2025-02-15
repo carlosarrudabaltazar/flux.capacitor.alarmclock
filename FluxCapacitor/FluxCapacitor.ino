@@ -24,12 +24,12 @@ int minuteButtonPin = A2;
 //Global Variables
 boolean passedFirstStart = false;
 
-int analogHighLevel = 1000;
+int analogHighLevel = 1020;
 
 int hours = 0;
 int minutes = 0;
 long miliseconds = 0;
-int milisecondDelay = 368;
+int milisecondDelay = 374;
 int milisecondAdjust = 500 - milisecondDelay;
 
 int clockHour = 0;
@@ -71,7 +71,12 @@ void loop()
   }
   else
     delay(milisecondDelay);
-  
+
+  /*setupButton = analogRead(setupButtonPin);
+  hourButton = analogRead(hourButtonPin);
+  minuteButton = analogRead(minuteButtonPin);
+  Serial.println("setup:"+String(setupButton)+" | hour:"+String(hourButton)+" | minute:"+String(minuteButton));*/
+
   switch(clockState)
   {
     case clockStates::standby:
